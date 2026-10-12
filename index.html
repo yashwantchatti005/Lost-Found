@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lost & Found — Campus Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+<div class="mesh-bg"></div>
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="blob b3"></div><div class="blob b4"></div>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html"       class="mob-link active"><i class="bi bi-house-fill"></i> Home</a>
+  <div class="mob-divider"></div>
+  <a href="browse.html"   class="mob-link"><i class="bi bi-search"></i> Browse Items</a>
+  <div class="mob-divider"></div>
+  <a href="report.html" class="mob-link"><i class="bi bi-upload"></i> Report Found</a>
+  <div class="mob-divider"></div>
+  <a href="#how"    class="mob-link"><i class="bi bi-list-check"></i> How It Works</a>
+  <div class="mob-divider"></div>
+  <div class="mob-pills">
+    <a href="login.html"  class="pill pill-o"><i class="bi bi-person-lock"></i> Admin Login</a>
+  </div>
+</div>
+
+<nav id="nav">
+  <a href="index.html" class="brand">Lost &amp; Found ✨</a>
+
+  <div class="nav-links">
+    <a href="index.html"       class="nav-link active"><i class="bi bi-house-fill"></i> Home</a>
+    <a href="browse.html"   class="nav-link"><i class="bi bi-search"></i> Browse Items</a>
+    <a href="report.html" class="nav-link"><i class="bi bi-upload"></i> Report Found</a>
+    <a href="#how"    class="nav-link"><i class="bi bi-list-check"></i> How It Works</a>
+  </div>
+
+  <div class="nav-r">
+    <span id="clk"></span>
+    <a href="login.html"  class="pill pill-o" id="adminPill">Admin Login</a>
+    <button class="hamburger" id="hbg" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-in">
+    <div class="hero-pill"><div class="dot"></div>College Campus Portal</div>
+    <h1><span class="l1">Lost Something?</span><span class="lg">We'll Find It! 🎯</span></h1>
+    <p class="hero-sub">A joyful, secure digital platform to report, discover, and recover lost belongings across campus — fast, easy, and completely free.</p>
+    <div class="hero-cta">
+      <a href="report.html" class="btn-hp"><i class="bi bi-upload"></i>Report Found Item</a>
+      <a href="browse.html" class="btn-hs"><i class="bi bi-search"></i>Browse Items</a>
+    </div>
+    <div class="float-row">
+      <div class="fc">🔒 Secure & Private</div>
+      <div class="fc">⚡ Quick Listings</div>
+      <div class="fc">🎓 Campus-Wide</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <span class="eyebrow">By the Numbers</span>
+      <h2 class="st">Reuniting Campus 💜</h2>
+      <p class="sub">Our platform helps students recover what matters most.</p>
+    </div>
+    <div class="stats-g reveal">
+      <div class="sc2"><div class="sn" id="stTotal">0</div><div class="sl">Items Reported</div></div>
+      <div class="sc2"><div class="sn" id="stClaimed">0</div><div class="sl">Successfully Claimed</div></div>
+      <div class="sc2"><div class="sn" id="stAvail">0</div><div class="sl">Currently Available</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-inner">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Why Us</span>
+      <h2 class="st">Built for Campus Life 🏫</h2>
+      <p class="sub">Everything you need to find lost items or report something you found.</p>
+    </div>
+    <div class="feat-g reveal">
+      <div class="fc2"><div class="fi">📸</div><div class="ft">Photo Verified Reports</div><div class="fd">Every item comes with a photo so you can instantly recognize what belongs to you.</div></div>
+      <div class="fc2"><div class="fi">🔍</div><div class="ft">Smart Search & Filter</div><div class="fd">Browse by category, location, or keyword to find your item in seconds.</div></div>
+      <div class="fc2"><div class="fi">✅</div><div class="ft">Admin Verified</div><div class="fd">All reports are reviewed by campus administration before going live.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="how-bg" id="how">
+  <section class="sec">
+    <div class="sec-inner">
+      <div class="sec-head reveal">
+        <span class="eyebrow">How It Works</span>
+        <h2 class="st">Three Simple Steps 🚀</h2>
+      </div>
+      <div class="steps-g reveal">
+        <div class="step"><div class="snw">1</div><div class="stt">Report the Item</div><div class="std">Found something on campus? Submit a quick report with a photo and location.</div></div>
+        <div class="step"><div class="snw">2</div><div class="stt">Admin Reviews</div><div class="std">Our admin team verifies and publishes your report within a few hours.</div></div>
+        <div class="step"><div class="snw">3</div><div class="stt">Owner Claims It</div><div class="std">The rightful owner visits the office with proof and collects their item.</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="cta-band reveal">
+  <h2>Found Something? Help Out! 🌟</h2>
+  <p>It takes just 2 minutes to make someone's day a whole lot better.</p>
+  <a href="report.html" class="btn-cw"><i class="bi bi-plus-circle-fill"></i>Submit a Report</a>
+</div>
+
+<footer>
+  <div class="fb-brand">Lost & Found ✨</div>
+  <p>© 2026 College Lost & Found · Admin Office, Block A Room 105<br>All rights reserved 💜</p>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
+<script>
+
+const nav     = document.getElementById('nav');
+const clk     = document.getElementById('clk');
+const hbg     = document.getElementById('hbg');
+const mobMenu = document.getElementById('mobMenu');
+
+window.addEventListener('scroll',()=>{nav.classList.toggle('sc',window.scrollY>30)},{passive:true});
+
+function tick(){const n=new Date();clk.textContent=n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+if(clk){tick();setInterval(tick,1000)}
+
+function closeMenu(){
+  hbg.classList.remove('open');
+  mobMenu.classList.remove('open');
+  hbg.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+}
+
+hbg.addEventListener('click',()=>{
+  const isOpen = hbg.classList.toggle('open');
+  mobMenu.classList.toggle('open', isOpen);
+  hbg.setAttribute('aria-expanded', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
+
+mobMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+const obs = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+(async()=>{
+  const items=await fetchItems();
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  const tot=items.length,cl=items.filter(i=>i.status==='Claimed').length;
+  set('stTotal',tot);set('stClaimed',cl);set('stAvail',tot-cl);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report Found Item — Lost & Found</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="css/report.css">
+</head>
+<body>
+<div class="mesh-bg"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+
+<nav>
+  <a href="index.html" class="brand">Lost & Found ✨</a>
+  <div class="nav-r">
+    <a href="browse.html" class="pill pill-o"><i class="bi bi-grid-3x3-gap"></i><span class="pill-label">View Items</span></a>
+    <a href="index.html" class="pill pill-g"><i class="bi bi-house-fill"></i><span class="pill-label">Home</span></a>
+  </div>
+</nav>
+
+<div class="mobile-info-bar">
+  <p><i class="bi bi-info-circle-fill"></i>Your report will be reviewed by admin and listed within a few hours. Thank you for helping the community! 💜</p>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <span class="sb-eyebrow">Report an Item</span>
+    <h2 class="sb-title">Make a Difference 💛</h2>
+    <p class="sb-desc">Your honest report helps reunite someone with something they treasure. Two minutes of your time can make someone's whole day!</p>
+    <ul class="sb-list">
+      <li class="sb-item"><div class="sb-icon">✅</div><span class="sb-text">Reviewed and verified by administration</span></li>
+      <li class="sb-item"><div class="sb-icon">🔒</div><span class="sb-text">Secure and private reporting system</span></li>
+      <li class="sb-item"><div class="sb-icon">⚡</div><span class="sb-text">Listed publicly within a few hours</span></li>
+      <li class="sb-item"><div class="sb-icon">🎉</div><span class="sb-text">Help build a kinder campus community</span></li>
+    </ul>
+  </aside>
+
+  <div class="form-area">
+    <div class="form-box">
+      <h1 class="form-title">Report Found Item 🔍</h1>
+      <p class="form-sub">Fill in the details below so the owner can find their item.</p>
+
+      <form id="rf">
+        <div class="fgroup">
+          <label class="flabel" for="itemName">Item Name *</label>
+          <input type="text" id="itemName" class="finput" name="itemName"
+            placeholder="e.g., iPhone 13, Black Leather Wallet" required>
+        </div>
+
+        <div class="frow">
+          <div>
+            <label class="flabel" for="category">Category *</label>
+            <select id="category" class="fsel" name="category" required>
+              <option value="" disabled selected>Select category</option>
+              <option value="Phone">📱 Phone</option>
+              <option value="Laptop">💻 Laptop</option>
+              <option value="Watch">⌚ Watch</option>
+              <option value="Bike Keys">🔑 Bike Keys</option>
+              <option value="Wallet">👛 Wallet</option>
+              <option value="Gold">💛 Gold</option>
+              <option value="ID Card">🪪 ID Card</option>
+              <option value="Bag">🎒 Bag</option>
+              <option value="Others">📦 Others</option>
+            </select>
+          </div>
+          <div>
+            <label class="flabel" for="fd">Date Found *</label>
+            <input type="date" id="fd" class="finput" name="foundDate" required>
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <label class="flabel" for="location">Location Found *</label>
+          <input type="text" id="location" class="finput" name="location"
+            placeholder="e.g., Main Library, Block A Corridor, Canteen" required>
+        </div>
+
+        <div class="fgroup">
+          <label class="flabel" for="desc">Description</label>
+          <textarea id="desc" class="ftarea" name="description"
+            placeholder="Describe color, brand, condition, or any identifying marks..."></textarea>
+        </div>
+
+        <div class="fgroup">
+          <label class="flabel">Item Photo *</label>
+          <div class="upload-zone" id="uz">
+            <input type="file" name="imageFile" id="ii" accept="image/*" required>
+            <div id="ui">
+              <div class="up-icon">📸</div>
+              <div class="up-title">Tap or click to upload photo</div>
+              <div class="up-sub">JPG or PNG · Max 5MB</div>
+            </div>
+            <div class="prev-wrap" id="pw">
+              <img id="pi" class="prev-img" alt="Preview">
+              <button type="button" class="prev-rm" id="rb" onclick="removeImg(event)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <span class="form-note"><i class="bi bi-shield-check-fill"></i>Submitted securely to administration</span>
+          <button type="submit" class="btn-submit" id="sb">
+            <i class="bi bi-send-fill"></i>Submit Report
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal">
+  <div class="modal-box">
+    <span class="modal-emoji">🎉</span>
+    <div class="modal-title" id="mtitle">Report Submitted!</div>
+    <p class="modal-desc">Your item report has been received! Our admin team will review and publish it shortly. Thank you so much for helping the community! 💜</p>
+    <button class="btn-mc" id="mclose">Awesome!</button>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
+<script>
+
+window.addEventListener('load',()=>{
+  const fd=document.getElementById('fd');
+  if(fd)fd.value=new Date().toISOString().split('T')[0];
+});
+
+document.getElementById('ii').addEventListener('change',function(){
+  const f=this.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    document.getElementById('pi').src=e.target.result;
+    document.getElementById('ui').style.display='none';
+    document.getElementById('pw').style.display='block';
+  };
+  r.readAsDataURL(f);
+});
+
+function removeImg(e){
+  e.stopPropagation();
+  document.getElementById('ii').value='';
+  document.getElementById('pw').style.display='none';
+  document.getElementById('ui').style.display='block';
+}
+
+const uz=document.getElementById('uz');
+uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('dov')});
+uz.addEventListener('dragleave',()=>uz.classList.remove('dov'));
+uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('dov')});
+
+document.getElementById('rf').addEventListener('submit',async function(e){
+  e.preventDefault();
+  if(!sb){needConfig();return}
+  const f=e.target,b=document.getElementById('sb'),file=document.getElementById('ii').files[0];
+  if(file&&file.size>5*1024*1024){alert('Image is larger than 5MB. Please pick a smaller photo.');return}
+  b.disabled=true;b.innerHTML='<i class="bi bi-hourglass-split"></i> Submitting...';
+  try{
+    const image_path=file?await uploadImage(file):null;
+    const {error}=await sb.from('found_items').insert({
+      item_name:f.itemName.value.trim(),category:f.category.value,location:f.location.value.trim(),
+      description:f.description.value.trim()||null,found_date:f.foundDate.value,image_path,status:'Available'});
+    if(error)throw error;
+    document.getElementById('modal').classList.add('show');
+    f.reset();removeImg({stopPropagation(){}});
+    document.getElementById('fd').value=new Date().toISOString().split('T')[0];
+  }catch(err){console.error(err);alert('Could not submit: '+(err.message||err))}
+  b.disabled=false;b.innerHTML='<i class="bi bi-send-fill"></i>Submit Report';
+});
+
+document.getElementById('mclose').addEventListener('click',()=>{
+  document.getElementById('modal').classList.remove('show');
+});
+
+</script>
+</body>
+</html>

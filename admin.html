@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Lost & Found</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="mesh-bg"></div>
+
+<nav>
+  <div class="nav-left">
+    <a href="index.html" class="brand">Lost & Found ✨</a>
+    <span class="nav-badge">Admin</span>
+  </div>
+  <div class="nav-r">
+    <a href="index.html" class="pill pill-o"><i class="bi bi-house-fill"></i><span>Home</span></a>
+    <a href="#" id="logoutBtn" class="pill pill-d"><i class="bi bi-box-arrow-right"></i><span>Logout</span></a>
+  </div>
+</nav>
+
+<main>
+  <div class="main-inner">
+    <div class="page-header">
+      <span class="eyebrow">Administration</span>
+      <h1 class="pt">Manage Found Items 📋</h1>
+    </div>
+
+    <div class="summary-row">
+      <div class="sum-card"><div class="sum-val" id="sTot">0</div><div class="sum-lbl">Total Items</div></div>
+      <div class="sum-card"><div class="sum-val" id="sAv">0</div><div class="sum-lbl">Available</div></div>
+      <div class="sum-card"><div class="sum-val" id="sCl">0</div><div class="sum-lbl">Claimed</div></div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-top">
+        <div class="table-title">All Submissions</div>
+        <div class="search-w">
+          <i class="bi bi-search"></i>
+          <input type="text" id="si" placeholder="Filter items..." oninput="ft()" aria-label="Filter items">
+        </div>
+      </div>
+
+      <div class="mobile-cards" id="mcards"></div>
+
+      <div class="table-scroll">
+        <table id="itbl">
+          <thead><tr><th>ID</th><th>Photo</th><th>Item Name</th><th>Category</th><th>Location</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
+<script>
+let ITEMS=[];
+const badge=s=>s==='Claimed'?'<span class="badge-cl"><i class="bi bi-check2"></i>Claimed</span>':'<span class="badge-av">Available</span>';
+const thumb=it=>it.image_path?`<img src="${esc(imageUrl(it.image_path))}" class="thumb" alt="">`:'<span class="thumb ph">📦</span>';
+const actions=it=>(it.status==='Available'?`<button class="btn-claim" onclick="claim(${it.id})"><i class="bi bi-check-circle-fill"></i>Mark Claimed</button>`:'<span class="no-action"><i class="bi bi-dash"></i>Done</span>')
+  +` <button class="btn-del" onclick="del(${it.id})" title="Delete"><i class="bi bi-trash3-fill"></i></button>`;
+
+function render(){
+  const tot=ITEMS.length,cl=ITEMS.filter(i=>i.status==='Claimed').length;
+  sTot.textContent=tot;sCl.textContent=cl;sAv.textContent=tot-cl;
+  tbody.innerHTML=ITEMS.map(it=>`<tr><td class="id-cell">#${it.id}</td><td>${thumb(it)}</td>
+    <td><span class="item-name">${esc(it.item_name)}</span></td><td><span class="cat-tag">${esc(it.category)}</span></td>
+    <td><span class="loc-txt">${esc(it.location)}</span></td><td>${badge(it.status)}</td><td>${actions(it)}</td></tr>`).join('')
+    ||'<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted)">No items yet.</td></tr>';
+  mcards.innerHTML=ITEMS.map(it=>`<div class="m-card" data-text="${esc(it.id+' '+it.item_name+' '+it.category+' '+it.location+' '+it.status)}">
+    <div class="m-card-header"><div><div class="m-card-name">${esc(it.item_name)}</div><div class="m-card-id">#${it.id}</div></div>${badge(it.status)}</div>
+    <span class="m-card-cat">${esc(it.category)}</span>
+    <div class="m-card-row"><div class="m-card-loc"><i class="bi bi-geo-alt-fill"></i><span>${esc(it.location)}</span></div>${actions(it)}</div></div>`).join('');
+  ft();
+}
+async function load(){ITEMS=await fetchItems();render()}
+async function claim(id){
+  const {error}=await sb.from('found_items').update({status:'Claimed'}).eq('id',id);
+  if(error)return alert(error.message);load();
+}
+async function del(id){
+  if(!confirm('Delete this item permanently?'))return;
+  const it=ITEMS.find(i=>i.id===id);
+  const {error}=await sb.from('found_items').delete().eq('id',id);
+  if(error)return alert(error.message);
+  if(it&&it.image_path&&!it.image_path.startsWith('http'))await sb.storage.from(window.IMAGE_BUCKET).remove([it.image_path]);
+  load();
+}
+function ft(){
+  const q=document.getElementById('si').value.toLowerCase();
+  document.querySelectorAll('#itbl tbody tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(q)?'':'none'});
+  document.querySelectorAll('#mcards .m-card').forEach(c=>{c.style.display=(c.dataset.text||'').toLowerCase().includes(q)?'':'none'});
+}
+document.getElementById('logoutBtn').addEventListener('click',async e=>{e.preventDefault();await sb.auth.signOut();location.href='index.html'});
+(async()=>{
+  if(!sb){needConfig();location.href='login.html';return}
+  const {data}=await sb.auth.getSession();
+  if(!data.session){location.href='login.html';return}
+  load();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Found Items — Lost & Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  
+<link rel="stylesheet" href="css/browse.css">
+</head>
+<body>
+<div class="mesh-bg"></div>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+<nav>
+  <a href="index.html" class="brand">Lost &amp; Found ✨</a>
+  <div class="nav-r">
+    <a href="report.html" class="pill pill-o"><i class="bi bi-plus-lg"></i><span class="pill-txt">Report Item</span></a>
+    <a href="index.html" class="pill pill-g"><i class="bi bi-house-fill"></i><span class="pill-txt">Home</span></a>
+  </div>
+</nav>
+
+<header class="page-header">
+  <span class="eyebrow">Campus Found Items</span>
+  <h1 class="ph">Browse <span style="background:linear-gradient(135deg,var(--purple),var(--pink),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Found Items</span> 🔍</h1>
+  <p class="ph-sub">See something that belongs to you? Contact the admin office at Block A, Room 105 with proof of ownership.</p>
+</header>
+
+<div class="filter-bar">
+  <div class="search-w">
+    <i class="bi bi-search"></i>
+    <input type="text" id="si" placeholder="Search by name, category, location..." oninput="fi()">
+  </div>
+  <div class="filter-btns">
+    <button class="fbtn act" onclick="fs(this,'all')">✨ All</button>
+    <button class="fbtn" onclick="fs(this,'available')">🟢 Available</button>
+    <button class="fbtn" onclick="fs(this,'claimed')">✅ Claimed</button>
+  </div>
+</div>
+
+<div class="items-grid" id="grid">
+
+  <div class="empty-state" id="empty">
+    <div class="ei">🔍</div>
+    <div class="et">Nothing Found!</div>
+    <p class="es">No items match your filter. Try a different search or be the first to report one!</p>
+    <a href="report.html" class="btn-report"><i class="bi bi-plus-lg"></i>Report an Item</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 College Lost &amp; Found · Admin Office, Block A Room 105 · All rights reserved 💜</p>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
+<script>
+
+  let aStatus='all';
+  function fi(){
+    const q=document.getElementById('si').value.toLowerCase();
+    const cards=document.querySelectorAll('.icard');
+    let v=0;
+    cards.forEach(c=>{
+      const nm=c.dataset.name||'',ct=c.dataset.cat||'',lc=c.dataset.loc||'',st=c.dataset.status||'';
+      const mq=!q||nm.includes(q)||ct.includes(q)||lc.includes(q);
+      const ms=aStatus==='all'||st===aStatus;
+      if(mq&&ms){c.style.display='';v++}else{c.style.display='none'}
+    });
+    document.getElementById('empty').style.display=v===0?'block':'none';
+  }
+  function fs(btn,s){
+    aStatus=s;
+    document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('act'));
+    btn.classList.add('act');fi();
+  }
+  
+function animate(){
+  document.querySelectorAll('.icard').forEach((c,i)=>{
+    c.style.transition=`opacity .5s ease ${i*.07}s, transform .5s cubic-bezier(.16,1,.3,1) ${i*.07}s, box-shadow .4s, border-color .4s`;
+    requestAnimationFrame(()=>setTimeout(()=>c.classList.add('visible'),40+i*10));
+  });
+}
+function cardHTML(it){
+  const img=it.image_path?`<img src="${esc(imageUrl(it.image_path))}" class="iimg" alt="Item photo" loading="lazy">`:'<div class="placeholder">📦</div>';
+  const badge=it.status==='Claimed'?'<span class="badge-cl"><i class="bi bi-check2"></i>Claimed</span>':'<span class="badge-av">Available</span>';
+  return `<div class="icard" data-status="${esc((it.status||'').toLowerCase())}" data-name="${esc((it.item_name||'').toLowerCase())}" data-cat="${esc((it.category||'').toLowerCase())}" data-loc="${esc((it.location||'').toLowerCase())}">
+    <div class="img-wrap">${img}<div class="status-ov">${badge}</div></div>
+    <div class="card-body">
+      <div class="card-meta"><span class="cat-tag">${esc(it.category)}</span><span class="card-date">${fmtDate(it.found_date)}</span></div>
+      <div class="card-name">${esc(it.item_name)}</div>
+      <div class="card-loc"><i class="bi bi-geo-alt-fill"></i><span>${esc(it.location)}</span></div>
+    </div></div>`;
+}
+(async()=>{
+  const grid=document.getElementById('grid'),empty=document.getElementById('empty');
+  const items=await fetchItems();
+  grid.insertAdjacentHTML('afterbegin',items.map(cardHTML).join(''));
+  empty.style.display=items.length?'none':'block';
+  animate();
+})();
+</script>
+</body>
+</html>

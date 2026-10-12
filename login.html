@@ -1,0 +1,1202 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="Secure Lost and Found administration portal.">
+
+  <title>Admin Sign In | Lost &amp; Found</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+ <style>
+  
+:root {
+  --navy: #172b4d;
+  --navy-dark: #10213b;
+  --blue: #4263eb;
+  --blue-hover: #3451d1;
+  --text: #18243b;
+  --muted: #78859a;
+  --border: #e6eaf1;
+  --surface: #ffffff;
+  --background: #f5f7fb;
+  --success: #198568;
+  --danger: #c03945;
+  --radius: 22px;
+  --shadow: 0 24px 80px rgba(31, 48, 79, 0.09);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "DM Sans", sans-serif;
+  color: var(--text);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(66, 99, 235, 0.3);
+  outline-offset: 3px;
+}
+
+/* Background decoration */
+
+.background-shape {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.shape-one {
+  width: 400px;
+  height: 400px;
+  top: -230px;
+  right: 8%;
+  background: rgba(66, 99, 235, 0.06);
+}
+
+.shape-two {
+  width: 350px;
+  height: 350px;
+  bottom: -230px;
+  left: 30%;
+  background: rgba(36, 117, 163, 0.055);
+}
+
+/* Layout */
+
+.auth-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(460px, 0.95fr);
+  min-height: 100vh;
+  padding: 20px;
+  gap: 20px;
+}
+
+/* Branding panel */
+
+.welcome-panel {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 40px);
+  padding: clamp(30px, 4.2vw, 64px);
+  overflow: hidden;
+  border-radius: 26px;
+  color: #ffffff;
+  background:
+    radial-gradient(ellipse at 95% 8%, rgba(109, 145, 255, 0.22), transparent 34%),
+    radial-gradient(ellipse at 5% 95%, rgba(45, 104, 169, 0.2), transparent 35%),
+    linear-gradient(145deg, #1c3458 0%, #142947 53%, #10213b 100%);
+}
+
+.welcome-panel::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 460px;
+  height: 460px;
+  right: -210px;
+  top: 24%;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 48px rgba(255, 255, 255, 0.025),
+    0 0 0 96px rgba(255, 255, 255, 0.02),
+    0 0 0 144px rgba(255, 255, 255, 0.015);
+}
+
+.welcome-panel::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: 0.12;
+  pointer-events: none;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.5) 0.7px,
+    transparent 0.7px
+  );
+  background-size: 24px 24px;
+  mask-image: linear-gradient(135deg, black, transparent 70%);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  font-family: "Manrope", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+}
+
+.brand-icon {
+  display: grid;
+  place-items: center;
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 19px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.brand-accent {
+  color: #9cb5ff;
+  margin: 0 2px;
+}
+
+.welcome-content {
+  width: 100%;
+  max-width: 590px;
+  margin: 70px auto;
+  animation: slide-up 0.65s ease both;
+}
+
+.welcome-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 13px;
+  margin-bottom: 27px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 8px;
+  color: #d0dcf2;
+  background: rgba(255, 255, 255, 0.055);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
+
+.live-dot,
+.secure-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #65d6b1;
+  box-shadow: 0 0 0 4px rgba(101, 214, 177, 0.1);
+}
+
+.welcome-content h1 {
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(37px, 4vw, 64px);
+  line-height: 1.14;
+  letter-spacing: -2.8px;
+  font-weight: 800;
+}
+
+.welcome-content h1 > span {
+  color: #9cb5ff;
+}
+
+.welcome-description {
+  max-width: 435px;
+  margin-top: 24px;
+  color: #bdc9dc;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.feature-list {
+  display: grid;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.feature-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 13px;
+  color: #b3c7ff;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 19px;
+}
+
+.feature h3 {
+  margin: 2px 0 5px;
+  color: #f6f8fd;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.feature p {
+  color: #aebed4;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.welcome-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: #9cacc5;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+.footer-year {
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+/* Login panel */
+
+.login-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  padding: 35px clamp(15px, 4vw, 65px);
+}
+
+.mobile-brand {
+  display: none;
+  width: 100%;
+  max-width: 460px;
+  margin-bottom: 25px;
+}
+
+.mobile-brand .brand {
+  color: var(--navy);
+}
+
+.mobile-brand .brand-icon {
+  color: var(--blue);
+  border-color: #e5eaff;
+  background: #edf1ff;
+  box-shadow: none;
+}
+
+.mobile-brand .brand-accent {
+  color: var(--blue);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 460px;
+  padding: clamp(26px, 3vw, 42px);
+  border: 1px solid rgba(222, 228, 239, 0.85);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow);
+  animation: slide-up 0.65s 0.08s ease both;
+}
+
+.card-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.security-icon {
+  display: grid;
+  place-items: center;
+  width: 53px;
+  height: 53px;
+  border: 1px solid #e7ecff;
+  border-radius: 16px;
+  color: var(--blue);
+  background: linear-gradient(145deg, #f4f6ff, #eaf0ff);
+  font-size: 25px;
+}
+
+.secure-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 11px;
+  border: 1px solid #dcefe8;
+  border-radius: 8px;
+  color: #287c66;
+  background: #f3fbf7;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.secure-dot {
+  width: 6px;
+  height: 6px;
+  box-shadow: none;
+}
+
+.form-heading {
+  margin-bottom: 30px;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.7px;
+}
+
+.form-heading h2 {
+  color: var(--text);
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.25;
+}
+
+.heading-period {
+  color: var(--blue);
+}
+
+.form-heading p {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* Inputs */
+
+.field {
+  margin-bottom: 23px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 10px;
+  color: #35445c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.field-hint {
+  margin-bottom: 10px;
+  color: #99a3b5;
+  font-size: 10px;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 54px;
+  border: 1px solid #e0e6ef;
+  border-radius: 11px;
+  background: #fbfcfe;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.input-wrap:focus-within {
+  border-color: #8ca2ff;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(66, 99, 235, 0.09);
+}
+
+.input-icon {
+  flex-shrink: 0;
+  padding-left: 16px;
+  color: #8491a6;
+  font-size: 17px;
+  transition: color 0.2s ease;
+}
+
+.input-wrap:focus-within .input-icon {
+  color: var(--blue);
+}
+
+.input-wrap input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 13px;
+  border: none;
+  outline: none;
+  color: var(--text);
+  background: transparent;
+  font-size: 13px;
+}
+
+.input-wrap input::placeholder {
+  color: #a8b1c0;
+}
+
+.input-wrap input:focus-visible {
+  outline: none;
+}
+
+.password-toggle {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 46px;
+  height: 100%;
+  border: none;
+  border-radius: 0 11px 11px 0;
+  color: #8995a8;
+  background: transparent;
+  cursor: pointer;
+  font-size: 17px;
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: var(--blue);
+}
+
+/* Login button */
+
+.btn-login {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 54px;
+  margin-top: 7px;
+  padding: 14px 18px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: #ffffff;
+  background: linear-gradient(105deg, #4263eb, #3658d9);
+  box-shadow: 0 7px 18px rgba(66, 99, 235, 0.2);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.btn-login > i {
+  font-size: 17px;
+  transition: transform 0.2s ease;
+}
+
+.btn-login:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: linear-gradient(105deg, #3658d9, #2947c5);
+  box-shadow: 0 11px 24px rgba(66, 99, 235, 0.26);
+}
+
+.btn-login:hover:not(:disabled) > i {
+  transform: translateX(3px);
+}
+
+.btn-login:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-login:disabled {
+  cursor: wait;
+  opacity: 0.8;
+}
+
+.btn-login.is-loading {
+  background: #4964d2;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Error message */
+
+.message-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 22px;
+  padding: 13px;
+  border: 1px solid #f2d4d7;
+  border-radius: 10px;
+  color: var(--danger);
+  background: #fff6f6;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  animation: slide-up 0.2s ease both;
+}
+
+.message-box[hidden] {
+  display: none;
+}
+
+.message-box > i {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 16px;
+}
+
+.message-box span {
+  flex: 1;
+  min-width: 0;
+}
+
+.message-box button {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+  margin: -4px -4px 0 0;
+  border: none;
+  border-radius: 6px;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.message-box button:hover {
+  background: rgba(192, 57, 69, 0.08);
+}
+
+/* Links and footer */
+
+.secure-note {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 24px;
+  color: #8a96a9;
+  font-size: 10px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.secure-note i {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #3b9b7b;
+  font-size: 14px;
+}
+
+.card-divider {
+  height: 1px;
+  margin: 25px 0 20px;
+  background: #edf0f5;
+}
+
+.back-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  margin: 0 auto;
+  color: #6d7a90;
+  font-size: 12px;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.back-link i {
+  font-size: 15px;
+  transition: transform 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--blue);
+}
+
+.back-link:hover i {
+  transform: translateX(-3px);
+}
+
+.login-footer {
+  max-width: 400px;
+  margin-top: 25px;
+  color: #8b96a9;
+  font-size: 11px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.login-footer span {
+  display: block;
+  color: #68768d;
+}
+
+/* Animations */
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(13px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tablet */
+
+@media (max-width: 1050px) {
+  .auth-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(400px, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .welcome-panel {
+    min-height: calc(100vh - 24px);
+    padding: 35px 28px;
+  }
+
+  .welcome-content h1 {
+    font-size: clamp(35px, 4.4vw, 49px);
+    letter-spacing: -1.8px;
+  }
+
+  .welcome-description {
+    font-size: 13px;
+  }
+
+  .login-panel {
+    padding: 25px 15px;
+  }
+
+  .login-card {
+    padding: 28px 24px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 760px) {
+  body {
+    background:
+      radial-gradient(ellipse at top right, #e9eeff 0%, transparent 40%),
+      #f5f7fb;
+  }
+
+  .auth-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 22px 16px;
+    gap: 0;
+  }
+
+  .welcome-panel {
+    display: none;
+  }
+
+  .login-panel {
+    flex: 1;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .mobile-brand {
+    display: block;
+    max-width: 460px;
+    margin: 0 auto 27px;
+  }
+
+  .login-card {
+    max-width: 460px;
+    padding: clamp(23px, 6vw, 34px);
+    border-radius: 20px;
+    box-shadow: 0 16px 50px rgba(31, 48, 79, 0.075);
+  }
+
+  .card-topline {
+    margin-bottom: 27px;
+  }
+
+  .form-heading h2 {
+    font-size: 31px;
+  }
+
+  .login-footer {
+    margin: 23px auto 0;
+  }
+}
+
+/* Small phones */
+
+@media (max-width: 380px) {
+  .auth-layout {
+    padding: 18px 12px;
+  }
+
+  .brand {
+    font-size: 18px;
+  }
+
+  .login-card {
+    padding: 22px 18px;
+  }
+
+  .security-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .secure-label {
+    padding: 8px;
+    font-size: 8px;
+  }
+
+  .form-heading h2 {
+    font-size: 28px;
+  }
+
+  .welcome-footer {
+    font-size: 8px;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+ </style>
+</head>
+
+<body>
+  <div class="background-shape shape-one"></div>
+  <div class="background-shape shape-two"></div>
+
+  <main class="auth-layout">
+
+    <!-- LEFT: BRANDING PANEL -->
+    <section class="welcome-panel">
+
+      <a href="index.html" class="brand">
+        <span class="brand-icon">
+          <i class="bi bi-search-heart-fill"></i>
+        </span>
+        <span>Lost<span class="brand-accent">&amp;</span>Found</span>
+      </a>
+
+      <div class="welcome-content">
+
+        <div class="welcome-label">
+          <span class="live-dot"></span>
+          CAMPUS ADMINISTRATION
+        </div>
+
+        <h1>
+          A better way<br>
+          to bring things<br>
+          <span>back home.</span>
+        </h1>
+
+        <p class="welcome-description">
+          Keep your campus connected. Manage lost and found reports,
+          update item statuses, and help belongings find their way
+          back to their owners.
+        </p>
+
+        <div class="feature-list">
+
+          <div class="feature">
+            <span class="feature-icon">
+              <i class="bi bi-check2-circle"></i>
+            </span>
+            <div>
+              <h3>Simple item management</h3>
+              <p>Review and manage submissions in one place.</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <span class="feature-icon">
+              <i class="bi bi-arrow-repeat"></i>
+            </span>
+            <div>
+              <h3>Keep statuses updated</h3>
+              <p>Track available and claimed belongings.</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <span class="feature-icon">
+              <i class="bi bi-shield-check"></i>
+            </span>
+            <div>
+              <h3>Protected admin access</h3>
+              <p>Sign in securely with your administrator account.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <footer class="welcome-footer">
+        <span>MADE FOR A MORE CONNECTED CAMPUS</span>
+        <span class="footer-year">© 2026 Lost &amp; Found</span>
+      </footer>
+
+    </section>
+
+    <!-- RIGHT: LOGIN PANEL -->
+    <section class="login-panel">
+
+      <div class="mobile-brand">
+        <a href="index.html" class="brand">
+          <span class="brand-icon">
+            <i class="bi bi-search-heart-fill"></i>
+          </span>
+          <span>Lost<span class="brand-accent">&amp;</span>Found</span>
+        </a>
+      </div>
+
+      <div class="login-card">
+
+        <div class="card-topline">
+          <div class="security-icon">
+            <i class="bi bi-shield-lock"></i>
+          </div>
+
+          <span class="secure-label">
+            <span class="secure-dot"></span>
+            SECURE PORTAL
+          </span>
+        </div>
+
+        <div class="form-heading">
+          <span class="eyebrow">ADMINISTRATOR ACCESS</span>
+          <h2>Welcome back<span class="heading-period">.</span></h2>
+          <p>Sign in to continue to your dashboard.</p>
+        </div>
+
+        <!-- Error message -->
+        <div class="message-box" id="err" role="alert"
+             aria-live="polite" hidden>
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <span id="errTxt"></span>
+          <button type="button" id="closeError" aria-label="Dismiss error">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+
+        <!-- Login form -->
+        <form id="lf">
+
+          <div class="field">
+            <label for="username">Email address</label>
+
+            <div class="input-wrap">
+              <i class="bi bi-envelope input-icon"></i>
+
+              <input
+                type="email"
+                id="username"
+                name="username"
+                placeholder="admin@example.com"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="field">
+
+            <div class="label-row">
+              <label for="password">Password</label>
+              <span class="field-hint">Admin account</span>
+            </div>
+
+            <div class="input-wrap">
+              <i class="bi bi-lock input-icon"></i>
+
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              >
+
+              <button
+                class="password-toggle"
+                type="button"
+                id="togglePassword"
+                aria-label="Show password"
+                aria-pressed="false"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-login" id="lb">
+            <span class="btn-label">Sign in to dashboard</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+
+        </form>
+
+        <div class="secure-note">
+          <i class="bi bi-shield-check"></i>
+          <span>Your session is authenticated through Supabase.</span>
+        </div>
+
+        <div class="card-divider"></div>
+
+        <a href="index.html" class="back-link">
+          <i class="bi bi-arrow-left"></i>
+          <span>Back to homepage</span>
+        </a>
+
+      </div>
+
+      <p class="login-footer">
+        Need help accessing your account?
+        <span>Contact your campus administrator.</span>
+      </p>
+
+    </section>
+  </main>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase.js"></script>
+
+  <!-- Authentication -->
+  <script>
+    (() => {
+      'use strict';
+
+      const form = document.getElementById('lf');
+      const button = document.getElementById('lb');
+      const errorBox = document.getElementById('err');
+      const errorText = document.getElementById('errTxt');
+      const emailInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const passwordToggle = document.getElementById('togglePassword');
+
+      const originalButton = button.innerHTML;
+      let submitting = false;
+
+      function showError(message) {
+        errorText.textContent = message;
+        errorBox.hidden = false;
+      }
+
+      function clearError() {
+        errorBox.hidden = true;
+        errorText.textContent = '';
+      }
+
+      function setLoading(loading) {
+        button.disabled = loading;
+        button.classList.toggle('is-loading', loading);
+
+        button.innerHTML = loading
+          ? '<span class="spinner"></span><span>Signing you in...</span>'
+          : originalButton;
+      }
+
+      document.getElementById('closeError')
+        .addEventListener('click', clearError);
+
+      [emailInput, passwordInput].forEach(input => {
+        input.addEventListener('input', clearError);
+      });
+
+      passwordToggle.addEventListener('click', () => {
+        const showing = passwordInput.type === 'text';
+
+        passwordInput.type = showing ? 'password' : 'text';
+
+        passwordToggle.innerHTML = showing
+          ? '<i class="bi bi-eye"></i>'
+          : '<i class="bi bi-eye-slash"></i>';
+
+        passwordToggle.setAttribute(
+          'aria-label',
+          showing ? 'Show password' : 'Hide password'
+        );
+
+        passwordToggle.setAttribute(
+          'aria-pressed',
+          String(!showing)
+        );
+      });
+
+      async function checkSession() {
+        if (!sb) return;
+
+        try {
+          const { data, error } = await sb.auth.getSession();
+
+          if (!error && data.session) {
+            window.location.replace('admin.html');
+          }
+        } catch (error) {
+          console.error('Session check failed:', error);
+        }
+      }
+
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+
+        if (submitting) return;
+
+        clearError();
+
+        if (!sb) {
+          showError(
+            'Supabase is not configured. Check js/config.js and js/supabase.js.'
+          );
+          return;
+        }
+
+        if (!form.reportValidity()) return;
+
+        submitting = true;
+        setLoading(true);
+
+        try {
+          const { data, error } = await sb.auth.signInWithPassword({
+            email: emailInput.value.trim(),
+            password: passwordInput.value
+          });
+
+          if (error) throw error;
+
+          if (!data.session) {
+            throw new Error(
+              'No active session was created. Please try again.'
+            );
+          }
+
+          window.location.replace('admin.html');
+
+        } catch (error) {
+          console.error('Sign-in failed:', error);
+
+          const message = error.message || '';
+          let friendlyMessage =
+            'Unable to sign in. Please check your details and try again.';
+
+          if (/invalid login credentials/i.test(message)) {
+            friendlyMessage =
+              'Incorrect email or password. Please try again.';
+          } else if (/email not confirmed/i.test(message)) {
+            friendlyMessage =
+              'Please verify your email address before signing in.';
+          } else if (/network|fetch/i.test(message)) {
+            friendlyMessage =
+              'Connection problem. Check your internet and try again.';
+          } else if (/too many requests/i.test(message)) {
+            friendlyMessage =
+              'Too many attempts. Please wait before trying again.';
+          }
+
+          showError(friendlyMessage);
+
+          submitting = false;
+          setLoading(false);
+        }
+      });
+
+      checkSession();
+    })();
+  </script>
+
+</body>
+</html>

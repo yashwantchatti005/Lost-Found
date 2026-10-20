@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report Lost Item — Lost & Found</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="css/report.css">
+<style>
+  .lost-list{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:1rem 1rem 3rem}
+  .lost-list h2{font-family:'Syne',sans-serif;font-size:clamp(1.3rem,4vw,1.8rem);font-weight:800;margin-bottom:.35rem}
+  .lost-list .sub{color:var(--muted);font-size:.86rem;margin-bottom:1.25rem}
+  .lgrid{display:grid;grid-template-columns:1fr;gap:1rem}
+  @media(min-width:641px){.lgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:1025px){.lgrid{grid-template-columns:repeat(3,1fr)}}
+  .lcard{background:rgba(255,255,255,.9);border:2px solid rgba(132,94,247,.1);border-radius:20px;overflow:hidden;
+    box-shadow:0 6px 24px rgba(132,94,247,.08);display:flex;flex-direction:column}
+  .lcard img,.lcard .lph{width:100%;height:170px;object-fit:cover;display:flex;align-items:center;justify-content:center;
+    font-size:2.6rem;background:linear-gradient(135deg,rgba(132,94,247,.08),rgba(255,107,157,.08))}
+  .lbody{padding:1rem;display:flex;flex-direction:column;gap:.45rem;flex:1}
+  .lmeta{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+  .ltag{font-size:.68rem;font-weight:700;padding:.2rem .6rem;border-radius:50px;background:rgba(255,107,157,.12);color:var(--pink)}
+  .ldate{font-size:.72rem;color:var(--muted)}
+  .lname{font-weight:700;font-size:1rem}
+  .lloc{font-size:.8rem;color:var(--muted);display:flex;gap:.35rem;align-items:flex-start}
+  .ldesc{font-size:.82rem;color:var(--muted);line-height:1.55}
+  .lcontact{margin-top:auto;padding-top:.7rem;display:flex;gap:.5rem;flex-wrap:wrap}
+  .lbtn{flex:1;min-width:110px;text-align:center;text-decoration:none;font-size:.8rem;font-weight:700;
+    padding:.6rem .8rem;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:.35rem}
+  .lbtn-call{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff}
+  .lbtn-wa{background:rgba(6,214,160,.14);color:#049a72}
+  .lempty{grid-column:1/-1;text-align:center;color:var(--muted);padding:2rem 1rem;font-size:.9rem}
+  .privacy-note{font-size:.75rem;color:var(--muted);margin-top:.4rem;display:flex;gap:.4rem;align-items:flex-start}
+  .privacy-note i{color:var(--orange);margin-top:.1rem}
+</style>
+</head>
+<body>
+<div class="mesh-bg"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+
+<nav>
+  <a href="index.html" class="brand">Lost &amp; Found ✨</a>
+  <div class="nav-r">
+    <a href="lost-items.html" class="pill pill-o"><i class="bi bi-grid-3x3-gap"></i><span class="pill-label">Lost Items</span></a>
+    <a href="index.html" class="pill pill-g"><i class="bi bi-house-fill"></i><span class="pill-label">Home</span></a>
+  </div>
+</nav>
+
+<div class="mobile-info-bar">
+  <p><i class="bi bi-info-circle-fill"></i>Lost something? Post it here and anyone who finds it can contact you directly. Also check the Found Items page! 💜</p>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <span class="sb-eyebrow">Lost Something?</span>
+    <h2 class="sb-title">We'll Help You Find It 🔎</h2>
+    <p class="sb-desc">Post your lost item with a few details and your contact number. Whoever finds it can reach you straight away.</p>
+    <ul class="sb-list">
+      <li class="sb-item"><div class="sb-icon">📝</div><span class="sb-text">Post in under two minutes</span></li>
+      <li class="sb-item"><div class="sb-icon">📞</div><span class="sb-text">Finder can call or WhatsApp you</span></li>
+      <li class="sb-item"><div class="sb-icon">👀</div><span class="sb-text">Visible to everyone on campus</span></li>
+      <li class="sb-item"><div class="sb-icon">💜</div><span class="sb-text">Check the Found Items page too</span></li>
+    </ul>
+  </aside>
+
+  <div class="form-area">
+    <div class="form-box">
+      <h1 class="form-title">Report Lost Item 😢</h1>
+      <p class="form-sub">Example: "Bike key lost near Block A parking" — add details so the finder can reach you.</p>
+
+      <form id="lf">
+        <div class="fgroup">
+          <label class="flabel" for="itemName">Item Name *</label>
+          <input type="text" id="itemName" class="finput" placeholder="e.g., Bike key with red keychain" required>
+        </div>
+
+        <div class="frow">
+          <div>
+            <label class="flabel" for="category">Category *</label>
+            <select id="category" class="fsel" required>
+              <option value="" disabled selected>Select category</option>
+              <option value="Phone">📱 Phone</option>
+              <option value="Laptop">💻 Laptop</option>
+              <option value="Watch">⌚ Watch</option>
+              <option value="Bike Keys">🔑 Bike Keys</option>
+              <option value="Wallet">👛 Wallet</option>
+              <option value="Gold">💛 Gold</option>
+              <option value="ID Card">🪪 ID Card</option>
+              <option value="Bag">🎒 Bag</option>
+              <option value="Others">📦 Others</option>
+            </select>
+          </div>
+          <div>
+            <label class="flabel" for="ld">Date Lost *</label>
+            <input type="date" id="ld" class="finput" required>
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <label class="flabel" for="location">Where Did You Lose It? *</label>
+          <input type="text" id="location" class="finput" placeholder="e.g., Canteen, Block A parking, Library" required>
+        </div>
+
+        <div class="fgroup">
+          <label class="flabel" for="desc">Description</label>
+          <textarea id="desc" class="ftarea" placeholder="Color, brand, keychain, marks or anything that helps identify it..."></textarea>
+        </div>
+
+        <div class="frow">
+          <div>
+            <label class="flabel" for="cname">Your Name *</label>
+            <input type="text" id="cname" class="finput" placeholder="Your name" required>
+          </div>
+          <div>
+            <label class="flabel" for="cphone">Phone / WhatsApp *</label>
+            <input type="tel" id="cphone" class="finput" placeholder="10-digit mobile number" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" required>
+          </div>
+        </div>
+        <p class="privacy-note"><i class="bi bi-exclamation-triangle-fill"></i>Your name and number will be visible to everyone on this page so the finder can contact you.</p>
+
+        <div class="fgroup" style="margin-top:1rem">
+          <label class="flabel">Photo (optional)</label>
+          <div class="upload-zone" id="uz">
+            <input type="file" id="ii" accept="image/*">
+            <div id="ui">
+              <div class="up-icon">📸</div>
+              <div class="up-title">Tap or click to upload photo</div>
+              <div class="up-sub">A similar photo or the item itself · JPG or PNG · Max 5MB</div>
+            </div>
+            <div class="prev-wrap" id="pw">
+              <img id="pi" class="prev-img" alt="Preview">
+              <button type="button" class="prev-rm" onclick="removeImg(event)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <span class="form-note"><i class="bi bi-shield-check-fill"></i>Posted instantly on the Lost page</span>
+          <button type="submit" class="btn-submit" id="sb"><i class="bi bi-send-fill"></i>Post Lost Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal">
+  <div class="modal-box">
+    <span class="modal-emoji">🙏</span>
+    <div class="modal-title">Posted!</div>
+    <p class="modal-desc">Your lost item is now on the page. If someone finds it, they'll contact you. Fingers crossed! 💜</p>
+     <button class="btn-mc" id="mclose">View Lost Items</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase.js"></script>
+<script>
+const today = () => new Date().toISOString().split('T')[0];
+document.getElementById('ld').value = today();
+document.getElementById('ld').max = today();
+
+/* photo preview */
+document.getElementById('ii').addEventListener('change', function () {
+  const f = this.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    document.getElementById('pi').src = e.target.result;
+    document.getElementById('ui').style.display = 'none';
+    document.getElementById('pw').style.display = 'block';
+  };
+  r.readAsDataURL(f);
+});
+function removeImg(e) {
+  e.stopPropagation();
+  document.getElementById('ii').value = '';
+  document.getElementById('pw').style.display = 'none';
+  document.getElementById('ui').style.display = 'block';
+}
+
+/* only digits in phone box */
+document.getElementById('cphone').addEventListener('input', function () {
+  this.value = this.value.replace(/\D/g, '').slice(0, 10);
+});
+
+/* load list */
+async function loadLost() {
+  const grid = document.getElementById('lgrid');
+  if (!sb) { grid.innerHTML = '<div class="lempty">Supabase not configured yet.</div>'; return; }
+  const { data, error } = await sb.from('lost_items').select('*')
+    .eq('status', 'Lost').order('created_at', { ascending: false });
+  if (error) { console.error(error); grid.innerHTML = '<div class="lempty">Could not load items.</div>'; return; }
+  if (!data.length) { grid.innerHTML = '<div class="lempty">No lost items posted yet 🎉</div>'; return; }
+  grid.innerHTML = data.map(it => {
+    const img = it.image_path
+      ? `<img src="${esc(imageUrl(it.image_path))}" alt="Item photo" loading="lazy">`
+      : '<div class="lph">🔑</div>';
+    const ph = esc(it.contact_phone);
+    return `<div class="lcard">${img}
+      <div class="lbody">
+        <div class="lmeta"><span class="ltag">${esc(it.category)}</span><span class="ldate">Lost ${fmtDate(it.lost_date)}</span></div>
+        <div class="lname">${esc(it.item_name)}</div>
+        <div class="lloc"><i class="bi bi-geo-alt-fill"></i><span>${esc(it.location)}</span></div>
+        ${it.description ? `<div class="ldesc">${esc(it.description)}</div>` : ''}
+        <div class="ldesc"><b>${esc(it.contact_name)}</b></div>
+        <div class="lcontact">
+          <a class="lbtn lbtn-call" href="tel:${ph}"><i class="bi bi-telephone-fill"></i>Call</a>
+          <a class="lbtn lbtn-wa" href="https://wa.me/91${ph}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i>WhatsApp</a>
+        </div>
+      </div></div>`;
+  }).join('');
+}
+loadLost();
+
+/* submit */
+document.getElementById('lf').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  if (!sb) { needConfig(); return; }
+  const b = document.getElementById('sb');
+  const file = document.getElementById('ii').files[0];
+  const phone = document.getElementById('cphone').value.trim();
+  if (!/^[0-9]{10}$/.test(phone)) { alert('Please enter a valid 10-digit phone number.'); return; }
+  if (file && file.size > 5 * 1024 * 1024) { alert('Image is larger than 5MB. Please pick a smaller photo.'); return; }
+  b.disabled = true; b.innerHTML = '<i class="bi bi-hourglass-split"></i> Posting...';
+  try {
+    const image_path = file ? await uploadImage(file) : null;
+    const { error } = await sb.from('lost_items').insert({
+      item_name: document.getElementById('itemName').value.trim(),
+      category: document.getElementById('category').value,
+      location: document.getElementById('location').value.trim(),
+      lost_date: document.getElementById('ld').value,
+      description: document.getElementById('desc').value.trim() || null,
+      contact_name: document.getElementById('cname').value.trim(),
+      contact_phone: phone,
+      image_path,
+      status: 'Lost'
+    });
+    if (error) throw error;
+    document.getElementById('modal').classList.add('show');
+    this.reset(); removeImg({ stopPropagation() {} });
+    document.getElementById('ld').value = today();
+    loadLost();
+  } catch (err) {
+    console.error(err);
+    alert('Could not post: ' + (err.message || err));
+  }
+  b.disabled = false; b.innerHTML = '<i class="bi bi-send-fill"></i>Post Lost Item';
+});
+
+document.getElementById('mclose').addEventListener('click', () => {
+  location.href = 'lost-items.html';
+});
+</script>
+</body>
+</html>

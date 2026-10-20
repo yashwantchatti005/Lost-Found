@@ -180,3 +180,5 @@
     /* animations */
     .icard{opacity:0;transform:translateY(20px)}
     .icard.visible{opacity:1;transform:translateY(0)}
+ .card-desc{font-size:.82rem;color:var(--muted);line-height:1.55;margin-top:.35rem;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}

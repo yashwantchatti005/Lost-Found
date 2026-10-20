@@ -9,6 +9,101 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 <link rel="stylesheet" href="css/admin.css">
+<style>
+/* ── header ── */
+.page-header{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.ph-sub{color:var(--muted);font-size:.84rem;margin-top:.35rem}
+.ph-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.pill-p{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;box-shadow:0 5px 16px rgba(132,94,247,.3)}
+.pill-p:hover{transform:translateY(-2px);color:#fff}
+.spin{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── tabs ── */
+.tabs{display:inline-flex;gap:.3rem;padding:.35rem;margin-bottom:1.3rem;max-width:100%;
+  background:rgba(255,255,255,.85);backdrop-filter:blur(15px);border:2px solid rgba(255,255,255,.98);
+  border-radius:60px;box-shadow:0 6px 22px rgba(132,94,247,.09)}
+.tab{border:0;background:transparent;color:var(--muted);font-family:inherit;font-weight:700;font-size:.88rem;
+  padding:.65rem 1.15rem;border-radius:50px;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:.5rem;white-space:nowrap}
+.tab:hover{color:var(--purple)}
+.tab .cnt{min-width:24px;height:24px;padding:0 .45rem;border-radius:50px;background:rgba(132,94,247,.1);color:var(--purple);
+  font-size:.74rem;display:inline-flex;align-items:center;justify-content:center}
+.tab.act,.tab.act:hover{color:#fff}
+.tab.act .cnt{background:rgba(255,255,255,.28);color:#fff}
+.tab[data-t=found].act{background:linear-gradient(135deg,var(--teal),var(--blue));box-shadow:0 6px 18px rgba(6,214,160,.35)}
+.tab[data-t=lost].act{background:linear-gradient(135deg,var(--pink),var(--orange));box-shadow:0 6px 18px rgba(255,107,157,.35)}
+
+/* ── summary cards ── */
+.summary-row{grid-template-columns:repeat(2,1fr);gap:.85rem}
+.sum-card{flex-direction:column;align-items:flex-start;gap:.55rem;padding:1.15rem 1.1rem 1rem}
+.sum-card::before{top:0;bottom:auto;left:0;right:0;width:auto;height:4px;border-radius:18px 18px 0 0}
+.sum-card:nth-child(1)::before{background:linear-gradient(90deg,var(--purple),var(--pink))}
+.sum-card:nth-child(2)::before{background:linear-gradient(90deg,var(--teal),var(--blue))}
+.sum-card:nth-child(3)::before{background:linear-gradient(90deg,var(--orange),var(--yellow))}
+.sum-card:nth-child(4)::before{background:linear-gradient(90deg,var(--pink),var(--purple))}
+.sum-card:nth-child(4) .sum-val{background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sum-ic{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.sum-card:nth-child(1) .sum-ic{background:rgba(132,94,247,.12);color:var(--purple)}
+.sum-card:nth-child(2) .sum-ic{background:rgba(6,214,160,.14);color:#059669}
+.sum-card:nth-child(3) .sum-ic{background:rgba(255,154,60,.16);color:#d97706}
+.sum-card:nth-child(4) .sum-ic{background:rgba(255,107,157,.14);color:#e0386a}
+.bar{height:6px;width:100%;background:rgba(132,94,247,.1);border-radius:6px;overflow:hidden;margin-top:.45rem}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--purple));border-radius:6px;transition:width .6s ease}
+@media(min-width:900px){.summary-row{grid-template-columns:repeat(4,1fr)}}
+
+/* ── filter chips + tools ── */
+.tools{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap}
+.chip{border:1.5px solid rgba(132,94,247,.18);background:#fff;color:var(--muted);font-family:inherit;font-weight:700;
+  font-size:.78rem;padding:.4rem .85rem;border-radius:50px;cursor:pointer;transition:all .2s}
+.chip:hover{border-color:var(--purple);color:var(--purple)}
+.chip.act{background:var(--purple);border-color:var(--purple);color:#fff}
+
+/* ── rows ── */
+.thumb{width:48px;height:48px}
+img.thumb{cursor:zoom-in;transition:transform .2s}
+img.thumb:hover{transform:scale(1.08)}
+.nm{display:flex;flex-direction:column}
+.nm small{color:var(--muted);font-size:.72rem;font-weight:500;margin-top:.1rem}
+.acts{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.ct{display:flex;align-items:center;gap:.5rem}
+.who{font-size:.82rem;line-height:1.35;font-weight:600}
+.who span{display:block;color:var(--muted);font-weight:500}
+.mini{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:.85rem;flex-shrink:0;transition:transform .2s}
+.mini:hover{transform:translateY(-2px)}
+.mini.call{background:rgba(132,94,247,.12);color:var(--purple)}
+.mini.wa{background:rgba(6,214,160,.14);color:#049a72}
+.badge-lost{display:inline-flex;align-items:center;gap:.25rem;font-size:.74rem;font-weight:700;
+  padding:.28rem .82rem;border-radius:50px;background:rgba(255,107,157,.12);border:1.5px solid rgba(255,107,157,.3);color:#e0386a}
+.m-top{display:flex;gap:.7rem;align-items:center;min-width:0}
+.m-ct{display:flex;align-items:center;gap:.5rem;margin:.1rem 0 .7rem}
+
+/* ── empty / lightbox / toast ── */
+.empty{text-align:center;padding:2.6rem 1rem;color:var(--muted);font-size:.88rem}
+.empty .e{font-size:2.4rem;margin-bottom:.4rem}
+.empty b{display:block;font-family:'Syne',sans-serif;color:var(--text);font-size:1.05rem;margin-bottom:.2rem}
+.lb{position:fixed;inset:0;z-index:2000;background:rgba(26,5,51,.7);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:1.2rem}
+.lb.show{display:flex}
+.lb img{max-width:100%;max-height:85vh;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.lb button{position:absolute;top:1rem;right:1rem;width:42px;height:42px;border-radius:50%;border:0;background:#fff;color:var(--text);font-size:1.1rem;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:1.5rem;transform:translate(-50%,30px);opacity:0;z-index:3000;background:var(--text);color:#fff;
+  padding:.75rem 1.2rem;border-radius:50px;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:.5rem;
+  transition:all .35s cubic-bezier(.16,1,.3,1);pointer-events:none;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.err{background:#cc2255}
+.fade{animation:fin .35s ease both}
+@keyframes fin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.fade{animation:none}.spin{animation:none}}
+
+.finds{background:rgba(255,255,255,.92);border:2px solid rgba(255,154,60,.4);border-radius:20px;padding:1.1rem 1.2rem;margin-bottom:1.4rem;box-shadow:0 8px 28px rgba(255,154,60,.14)}
+.finds h3{font-family:'Syne',sans-serif;font-size:1.05rem;margin-bottom:.4rem;display:flex;gap:.5rem;align-items:center}
+.finds h3 i{color:var(--orange)}
+.fr{display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap;padding:.8rem 0;border-top:1px solid rgba(132,94,247,.12);font-size:.86rem}
+.fr .fmsg,.fr .fo{color:var(--muted);margin-top:.2rem}
+.fr .fo{font-size:.78rem}
+.newb{background:#e11d68;color:#fff;border-radius:50px;font-size:.68rem;padding:.1rem .5rem}
+</style>
 </head>
 <body>
 <div class="mesh-bg"></div>
@@ -26,23 +121,42 @@
 
 <main>
   <div class="main-inner">
+
     <div class="page-header">
-      <span class="eyebrow">Administration</span>
-      <h1 class="pt">Manage Found Items 📋</h1>
+      <div>
+        <span class="eyebrow">Administration</span>
+        <h1 class="pt" id="ptitle">Manage Found Items</h1>
+        <p class="ph-sub" id="who">Loading...</p>
+      </div>
+      <div class="ph-actions">
+        <button class="pill pill-o" onclick="load(true)"><i class="bi bi-arrow-clockwise" id="refIc"></i><span>Refresh</span></button>
+        <a class="pill pill-p" id="viewLink" href="browse.html" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i><span>View public page</span></a>
+      </div>
     </div>
 
+<div class="tabs" role="tablist">
+  <button class="tab act" data-t="found" onclick="setTab('found')"><i class="bi bi-box-seam-fill"></i>Found items<span class="cnt" id="cntF">0</span></button>
+  <button class="tab" data-t="lost" onclick="setTab('lost')"><i class="bi bi-exclamation-circle-fill"></i>Lost items<span class="cnt" id="cntL">0</span><span class="newb" id="newB" style="display:none"></span></button>
+</div>
+
     <div class="summary-row">
-      <div class="sum-card"><div class="sum-val" id="sTot">0</div><div class="sum-lbl">Total Items</div></div>
-      <div class="sum-card"><div class="sum-val" id="sAv">0</div><div class="sum-lbl">Available</div></div>
-      <div class="sum-card"><div class="sum-val" id="sCl">0</div><div class="sum-lbl">Claimed</div></div>
+      <div class="sum-card"><div class="sum-ic"><i class="bi bi-collection-fill"></i></div><div><div class="sum-val" id="sTot">0</div><div class="sum-lbl" id="lTot">Total items</div></div></div>
+      <div class="sum-card"><div class="sum-ic"><i class="bi bi-hourglass-split"></i></div><div><div class="sum-val" id="sAv">0</div><div class="sum-lbl" id="lAv">Waiting for owner</div></div></div>
+      <div class="sum-card"><div class="sum-ic"><i class="bi bi-check2-circle"></i></div><div><div class="sum-val" id="sCl">0</div><div class="sum-lbl" id="lCl">Claimed</div></div></div>
+      <div class="sum-card"><div class="sum-ic"><i class="bi bi-graph-up-arrow"></i></div><div style="width:100%"><div class="sum-val" id="sRate">0%</div><div class="sum-lbl" id="lRate">Return rate</div><div class="bar"><i id="bar"></i></div></div></div>
     </div>
+
+    <div id="finds"></div>
 
     <div class="table-wrap">
       <div class="table-top">
-        <div class="table-title">All Submissions</div>
-        <div class="search-w">
-          <i class="bi bi-search"></i>
-          <input type="text" id="si" placeholder="Filter items..." oninput="ft()" aria-label="Filter items">
+        <div class="table-title" id="ttitle">All Found Submissions</div>
+        <div class="tools">
+          <div class="chips" id="chips"></div>
+          <div class="search-w">
+            <i class="bi bi-search"></i>
+            <input type="text" id="si" placeholder="Search..." oninput="ft()" aria-label="Search items">
+          </div>
         </div>
       </div>
 
@@ -50,62 +164,232 @@
 
       <div class="table-scroll">
         <table id="itbl">
-          <thead><tr><th>ID</th><th>Photo</th><th>Item Name</th><th>Category</th><th>Location</th><th>Status</th><th>Action</th></tr></thead>
+          <thead id="thead"></thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
+
+      <div class="empty" id="noMatch" style="display:none">
+        <div class="e">🔍</div><b id="noMsg">Nothing here yet</b><span id="noSub"></span>
+      </div>
     </div>
+
   </div>
 </main>
+
+<div class="lb" id="lb" onclick="if(event.target===this)closeImg()">
+  <button onclick="closeImg()" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+  <img id="lbImg" alt="Item photo">
+</div>
+<div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/supabase.js"></script>
 <script>
-let ITEMS=[];
-const badge=s=>s==='Claimed'?'<span class="badge-cl"><i class="bi bi-check2"></i>Claimed</span>':'<span class="badge-av">Available</span>';
-const thumb=it=>it.image_path?`<img src="${esc(imageUrl(it.image_path))}" class="thumb" alt="">`:'<span class="thumb ph">📦</span>';
-const actions=it=>(it.status==='Available'?`<button class="btn-claim" onclick="claim(${it.id})"><i class="bi bi-check-circle-fill"></i>Mark Claimed</button>`:'<span class="no-action"><i class="bi bi-dash"></i>Done</span>')
-  +` <button class="btn-del" onclick="del(${it.id})" title="Delete"><i class="bi bi-trash3-fill"></i></button>`;
+const $ = id => document.getElementById(id);
+let TAB = 'found', STATUS = 'all', FOUND = [], LOST = [], FINDS = [];
 
-function render(){
-  const tot=ITEMS.length,cl=ITEMS.filter(i=>i.status==='Claimed').length;
-  sTot.textContent=tot;sCl.textContent=cl;sAv.textContent=tot-cl;
-  tbody.innerHTML=ITEMS.map(it=>`<tr><td class="id-cell">#${it.id}</td><td>${thumb(it)}</td>
-    <td><span class="item-name">${esc(it.item_name)}</span></td><td><span class="cat-tag">${esc(it.category)}</span></td>
-    <td><span class="loc-txt">${esc(it.location)}</span></td><td>${badge(it.status)}</td><td>${actions(it)}</td></tr>`).join('')
-    ||'<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted)">No items yet.</td></tr>';
-  mcards.innerHTML=ITEMS.map(it=>`<div class="m-card" data-text="${esc(it.id+' '+it.item_name+' '+it.category+' '+it.location+' '+it.status)}">
-    <div class="m-card-header"><div><div class="m-card-name">${esc(it.item_name)}</div><div class="m-card-id">#${it.id}</div></div>${badge(it.status)}</div>
-    <span class="m-card-cat">${esc(it.category)}</span>
-    <div class="m-card-row"><div class="m-card-loc"><i class="bi bi-geo-alt-fill"></i><span>${esc(it.location)}</span></div>${actions(it)}</div></div>`).join('');
+const CFG = {
+  found: { table: 'found_items', title: 'Manage Found Items', tbl: 'All Found Submissions', page: 'browse.html',
+           labels: ['Total items', 'Waiting for owner', 'Claimed', 'Return rate'], chip: ['Available', 'Claimed'],
+           open: 'Available', done: 'Claimed', btn: 'Mark Claimed', ph: '📦',
+           head: ['ID', 'Photo', 'Item', 'Category', 'Location', 'Status', 'Action'] },
+  lost:  { table: 'lost_items', title: 'Manage Lost Items', tbl: 'All Lost Posts', page: 'lost-items.html',
+           labels: ['Total posts', 'Still lost', 'Recovered', 'Recovery rate'], chip: ['Still lost', 'Recovered'],
+           open: 'Lost', done: 'Recovered', btn: 'Mark Recovered', ph: '🔎',
+           head: ['ID', 'Photo', 'Item', 'Category', 'Location', 'Contact', 'Status', 'Action'] }
+};
+
+const isDone = it => it.status === CFG[TAB].done;
+const when = it => (TAB === 'lost' ? 'Lost ' : 'Found ') + fmtDate(it.lost_date || it.found_date);
+
+const badge = s =>
+  (s === 'Claimed' || s === 'Recovered') ? `<span class="badge-cl"><i class="bi bi-check2"></i>${s}</span>`
+  : s === 'Lost' ? '<span class="badge-lost">Lost</span>'
+  : '<span class="badge-av">Available</span>';
+
+const thumb = it => it.image_path
+  ? `<img src="${esc(imageUrl(it.image_path))}" data-full="${esc(imageUrl(it.image_path))}" onclick="openImg(this.dataset.full)" class="thumb" alt="Item photo">`
+  : `<span class="thumb ph">${CFG[TAB].ph}</span>`;
+
+const actions = it => {
+  const c = CFG[TAB];
+  return (it.status === c.open
+    ? `<button class="btn-claim" onclick="mark(${it.id})"><i class="bi bi-check-circle-fill"></i>${c.btn}</button>`
+    : '<span class="no-action"><i class="bi bi-dash"></i>Done</span>')
+    + `<button class="btn-del" onclick="del(${it.id})" title="Delete" aria-label="Delete"><i class="bi bi-trash3-fill"></i></button>`;
+};
+
+const phoneBtns = it => `
+  <a class="mini call" href="tel:${esc(it.contact_phone)}" aria-label="Call"><i class="bi bi-telephone-fill"></i></a>
+  <a class="mini wa" href="https://wa.me/91${esc(it.contact_phone)}" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>`;
+
+const contact = it => `<div class="ct"><div class="who">${esc(it.contact_name)}<span>${esc(it.contact_phone)}</span></div>${phoneBtns(it)}</div>`;
+
+const rowHTML = it => `<tr class="fade" data-status="${isDone(it) ? 'done' : 'open'}">
+  <td class="id-cell">#${it.id}</td><td>${thumb(it)}</td>
+  <td><div class="nm"><span class="item-name">${esc(it.item_name)}</span><small>${when(it)}</small></div></td>
+  <td><span class="cat-tag">${esc(it.category)}</span></td>
+  <td><span class="loc-txt">${esc(it.location)}</span></td>
+  ${TAB === 'lost' ? `<td>${contact(it)}</td>` : ''}
+  <td>${badge(it.status)}</td><td><div class="acts">${actions(it)}</div></td></tr>`;
+
+const cardHTML = it => `<div class="m-card fade" data-status="${isDone(it) ? 'done' : 'open'}">
+  <div class="m-card-header">
+    <div class="m-top">${thumb(it)}<div><div class="m-card-name">${esc(it.item_name)}</div><div class="m-card-id">#${it.id} · ${when(it)}</div></div></div>
+    ${badge(it.status)}
+  </div>
+  <span class="m-card-cat">${esc(it.category)}</span>
+  ${TAB === 'lost' ? `<div class="m-ct"><div class="who">${esc(it.contact_name)}<span>${esc(it.contact_phone)}</span></div>${phoneBtns(it)}</div>` : ''}
+  <div class="m-card-row"><div class="m-card-loc"><i class="bi bi-geo-alt-fill"></i><span>${esc(it.location)}</span></div><div class="acts">${actions(it)}</div></div>
+</div>`;
+
+function render() {
+  const c = CFG[TAB], list = TAB === 'lost' ? LOST : FOUND;
+  const done = list.filter(isDone).length, tot = list.length, pct = tot ? Math.round(done / tot * 100) : 0;
+
+  document.body.dataset.tab = TAB;
+  $('cntF').textContent = FOUND.length;
+  $('cntL').textContent = LOST.length;
+  $('ptitle').textContent = c.title;
+  $('ttitle').textContent = c.tbl;
+  $('viewLink').href = c.page;
+  ['lTot', 'lAv', 'lCl', 'lRate'].forEach((id, i) => $(id).textContent = c.labels[i]);
+  $('sTot').textContent = tot; $('sAv').textContent = tot - done; $('sCl').textContent = done;
+  $('sRate').textContent = pct + '%'; $('bar').style.width = pct + '%';
+
+  $('chips').innerHTML = [['all', 'All'], ['open', c.chip[0]], ['done', c.chip[1]]]
+    .map(([k, l]) => `<button class="chip ${STATUS === k ? 'act' : ''}" data-k="${k}" onclick="setStatus('${k}')">${l}</button>`).join('');
+
+  $('thead').innerHTML = '<tr>' + c.head.map(h => `<th>${h}</th>`).join('') + '</tr>';
+  $('tbody').innerHTML = list.map(rowHTML).join('');
+  $('mcards').innerHTML = list.map(cardHTML).join('');
+  ft();
+    renderFinds();
+}
+
+function ft() {
+  const q = $('si').value.toLowerCase();
+  let n = 0;
+  const test = el => {
+    const ok = (STATUS === 'all' || el.dataset.status === STATUS) && el.textContent.toLowerCase().includes(q);
+    el.style.display = ok ? '' : 'none';
+    return ok;
+  };
+  document.querySelectorAll('#tbody tr').forEach(r => { if (test(r)) n++; });
+  document.querySelectorAll('#mcards .m-card').forEach(test);
+  const total = (TAB === 'lost' ? LOST : FOUND).length;
+  $('noMatch').style.display = n ? 'none' : 'block';
+  $('noMsg').textContent = total ? 'No matches' : 'Nothing here yet';
+  $('noSub').textContent = total ? 'Try a different search or filter.' : 'New posts will show up here.';
+}
+
+function setStatus(k) {
+  STATUS = k;
+  document.querySelectorAll('.chip').forEach(b => b.classList.toggle('act', b.dataset.k === k));
   ft();
 }
-async function load(){ITEMS=await fetchItems();render()}
-async function claim(id){
-  const {error}=await sb.from('found_items').update({status:'Claimed'}).eq('id',id);
-  if(error)return alert(error.message);load();
+function setTab(t) {
+  TAB = t; STATUS = 'all';
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('act', b.dataset.t === t));
+  render();
 }
-async function del(id){
-  if(!confirm('Delete this item permanently?'))return;
-  const it=ITEMS.find(i=>i.id===id);
-  const {error}=await sb.from('found_items').delete().eq('id',id);
-  if(error)return alert(error.message);
-  if(it&&it.image_path&&!it.image_path.startsWith('http'))await sb.storage.from(window.IMAGE_BUCKET).remove([it.image_path]);
+
+function toast(msg, err) {
+  const t = $('toast');
+  t.className = 'toast show' + (err ? ' err' : '');
+  t.innerHTML = `<i class="bi ${err ? 'bi-exclamation-triangle-fill' : 'bi-check-circle-fill'}"></i>${esc(msg)}`;
+  clearTimeout(toast.t);
+  toast.t = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function openImg(src) { $('lbImg').src = src; $('lb').classList.add('show'); }
+function closeImg() { $('lb').classList.remove('show'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeImg(); });
+
+async function load(manual) {
+  $('refIc').classList.add('spin');
+  FOUND = await fetchItems();
+  const { data, error } = await sb.from('lost_items').select('*').order('created_at', { ascending: false });
+  if (error) console.error(error);
+  LOST = data || [];
+
+  const fr = await sb.from('lost_finds').select('*').order('created_at', { ascending: false });
+  if (fr.error) console.error(fr.error);
+  FINDS = fr.data || [];
+
+  render();
+  $('refIc').classList.remove('spin');
+  if (manual === true) toast('Refreshed');
+}
+
+async function mark(id) {
+  const c = CFG[TAB];
+  const { error } = await sb.from(c.table).update({ status: c.done }).eq('id', id);
+  if (error) return toast(error.message, true);
+    if (TAB === 'lost') await sb.from('lost_finds').update({ seen: true }).eq('lost_item_id', id);
+  toast('Marked as ' + c.done.toLowerCase());
   load();
 }
-function ft(){
-  const q=document.getElementById('si').value.toLowerCase();
-  document.querySelectorAll('#itbl tbody tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(q)?'':'none'});
-  document.querySelectorAll('#mcards .m-card').forEach(c=>{c.style.display=(c.dataset.text||'').toLowerCase().includes(q)?'':'none'});
+
+async function del(id) {
+  if (!confirm('Delete this item permanently?')) return;
+  const c = CFG[TAB];
+  const it = (TAB === 'lost' ? LOST : FOUND).find(i => i.id === id);
+  const { error } = await sb.from(c.table).delete().eq('id', id);
+  if (error) return toast(error.message, true);
+  if (it && it.image_path && !it.image_path.startsWith('http'))
+    await sb.storage.from(window.IMAGE_BUCKET).remove([it.image_path]);
+  toast('Item deleted');
+  load();
 }
-document.getElementById('logoutBtn').addEventListener('click',async e=>{e.preventDefault();await sb.auth.signOut();location.href='index.html'});
-(async()=>{
-  if(!sb){needConfig();location.href='login.html';return}
-  const {data}=await sb.auth.getSession();
-  if(!data.session){location.href='login.html';return}
+
+$('logoutBtn').addEventListener('click', async e => {
+  e.preventDefault(); await sb.auth.signOut(); location.href = 'index.html';
+});
+
+(async () => {
+  if (!sb) { needConfig(); location.href = 'login.html'; return; }
+  const { data } = await sb.auth.getSession();
+  if (!data.session) { location.href = 'login.html'; return; }
+  $('who').textContent = 'Signed in as ' + (data.session.user.email || 'admin');
   load();
 })();
+
+function renderFinds() {
+  const open = FINDS.filter(f => !f.seen);
+  $('newB').style.display = open.length ? '' : 'none';
+  $('newB').textContent = open.length;
+  const box = $('finds');
+  if (TAB !== 'lost' || !open.length) { box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="finds"><h3><i class="bi bi-bell-fill"></i>${open.length} new finder report${open.length > 1 ? 's' : ''}</h3>` +
+    open.map(f => {
+      const it = LOST.find(i => i.id === f.lost_item_id) || {};
+      return `<div class="fr"><div>
+        <b>${esc(it.item_name || 'Item #' + f.lost_item_id)}</b> found by ${esc(f.finder_name)} · ${fmtDate(f.created_at)}
+        ${f.message ? `<div class="fmsg">${esc(f.message)}</div>` : ''}
+        <div class="fo">Owner: ${esc(it.contact_name || '')} ${esc(it.contact_phone || '')}</div></div>
+        <div class="acts">
+          <a class="mini call" href="tel:${esc(f.finder_phone)}" aria-label="Call finder"><i class="bi bi-telephone-fill"></i></a>
+          <a class="mini wa" href="https://wa.me/91${esc(f.finder_phone)}" target="_blank" rel="noopener" aria-label="WhatsApp finder"><i class="bi bi-whatsapp"></i></a>
+          <button class="btn-claim" onclick="recoverFrom(${f.lost_item_id})"><i class="bi bi-check-circle-fill"></i>Mark recovered</button>
+          <button class="chip" onclick="dismissFind(${f.id})">Dismiss</button>
+        </div></div>`;
+    }).join('') + '</div>';
+}
+async function dismissFind(id) {
+  const { error } = await sb.from('lost_finds').update({ seen: true }).eq('id', id);
+  if (error) return toast(error.message, true);
+  load();
+}
+async function recoverFrom(itemId) {
+  const { error } = await sb.from('lost_items').update({ status: 'Recovered' }).eq('id', itemId);
+  if (error) return toast(error.message, true);
+  await sb.from('lost_finds').update({ seen: true }).eq('lost_item_id', itemId);
+  toast('Marked as recovered');
+  load();
+}
 </script>
 </body>
 </html>

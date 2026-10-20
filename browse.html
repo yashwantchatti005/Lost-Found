@@ -93,8 +93,11 @@ function cardHTML(it){
     <div class="card-body">
       <div class="card-meta"><span class="cat-tag">${esc(it.category)}</span><span class="card-date">${fmtDate(it.found_date)}</span></div>
       <div class="card-name">${esc(it.item_name)}</div>
-      <div class="card-loc"><i class="bi bi-geo-alt-fill"></i><span>${esc(it.location)}</span></div>
+    
+            <div class="card-loc"><i class="bi bi-geo-alt-fill"></i><span>${esc(it.location)}</span></div>
+      ${it.description ? `<div class="card-desc">${esc(it.description)}</div>` : ''}
     </div></div>`;
+ 
 }
 (async()=>{
   const grid=document.getElementById('grid'),empty=document.getElementById('empty');
